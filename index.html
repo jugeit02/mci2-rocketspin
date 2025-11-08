@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rocket Spin</title>
+    
+    <!-- Link zur CSS-Datei für das Styling -->
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+
+    <!-- UI-Element für den Punktestand -->
+    <div id="score">0</div>
+    
+    <!-- Das Canvas-Element, in dem das Spiel gezeichnet wird -->
+    <canvas id="gameCanvas"></canvas>
+    
+    <!-- Nachrichtenfenster für Startbildschirm und Game Over -->
+    <div id="messageBox">
+        <h1 id="messageTitle">Rocket Spin</h1>
+        <p id="messageText">Tippen zum Starten. Halten für Boost. Wischen für Rotation.</p>
+        <p style="font-size: 0.9em; margin-top: 20px;">Zwei Finger = Slow Motion</p>
+    </div>
+
+    <!-- Neue Steuerungs-Elemente (Joystick und Boost-Button) -->
+    <div id="controls">
+        <!-- Joystick Container (Rotation) -->
+        <div id="joystick-container">
+            <div id="joystick-pad"></div>
+        </div>
+
+        <!-- Boost Button (Antrieb) -->
+        <div id="boost-container">
+            <button id="boost-button">BOOST</button>
+        </div>
+    </div>
+
+    <!-- Link zur JavaScript-Datei mit der gesamten Spiellogik -->
+    <script src="game.js" defer></script>
+</body>
+</html>
