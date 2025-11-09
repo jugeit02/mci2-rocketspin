@@ -63,6 +63,33 @@ body {
   color: #ddd;
 }
 
+#messageText input[type="text"] {
+  width: 80%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  font-size: 1em;
+}
+
+.highscores {
+  margin-top: 12px;
+  text-align: left;
+}
+.highscores ol {
+  margin: 6px 0 0 18px;
+  padding: 0;
+  color: #fff;
+}
+.highscores li {
+  margin: 2px 0;
+  color: #ffd8b8;
+}
+.muted {
+  color: #888;
+}
+
 /* ---------------------------------- */
 /* STYLING FÜR DIE NEUEN STEUERUNGEN */
 /* ---------------------------------- */
