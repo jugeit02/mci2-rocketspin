@@ -11,6 +11,8 @@ import {
   setPlayer,
   getPlayer,
   joystickPad,
+  joystickContainer,
+  boostContainer,
 } from "./globals.js";
 import {
   getPlayerName,
@@ -119,11 +121,21 @@ function showOverlay(
   document.getElementById("messageTitle").textContent = title;
   document.getElementById("messageText").textContent = message;
   document.getElementById("messageSubtitle").innerHTML = subtitle;
+  // hide on-screen controls while overlay is visible
+  try {
+    if (joystickContainer) joystickContainer.style.display = "none";
+    if (boostContainer) boostContainer.style.display = "none";
+  } catch (e) {}
 }
 
 function hideOverlay() {
   messageBox.style.display = "none";
   overlayBackdrop.style.display = "none";
+  // restore on-screen controls when overlay hidden
+  try {
+    if (joystickContainer) joystickContainer.style.display = "";
+    if (boostContainer) boostContainer.style.display = "";
+  } catch (e) {}
 }
 
 export function showStartScreen(isGameOver = false) {

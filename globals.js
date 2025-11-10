@@ -7,6 +7,7 @@ export const overlayBackdrop = document.getElementById("overlayBackdrop");
 export const joystickContainer = document.getElementById("joystick-container");
 export const joystickPad = document.getElementById("joystick-pad");
 export const boostButton = document.getElementById("boost-button");
+export const boostContainer = document.getElementById("boost-container");
 
 function getPhysicsScale() {
   return window.innerWidth < 768 ? 0.6 : 1;
