@@ -53,7 +53,12 @@ export function initGame() {
   for (let i = 0; i < 100; i++) {
     stars.push(new Star());
   }
-  addControlEventListeners({ startGame });
+  addControlEventListeners({
+    startGame,
+    startIfAllowed: () => {
+      if (performance.now() >= restartBlockedUntil) startGame();
+    },
+  });
 
   const existingName = getPlayerName();
   if (!existingName) {

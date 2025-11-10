@@ -9,13 +9,15 @@ function getTouchById(touches, id) {
   return Array.from(touches).find((t) => t.identifier === id);
 }
 
-export function addControlEventListeners({ startGame }) {
+export function addControlEventListeners({ startGame, startIfAllowed }) {
+  const starter =
+    typeof startIfAllowed === "function" ? startIfAllowed : startGame;
   boostButton.addEventListener("touchstart", (e) =>
-    handleBoostStart(e, startGame)
+    handleBoostStart(e, starter)
   );
   boostButton.addEventListener("touchend", handleBoostEnd);
   boostButton.addEventListener("mousedown", (e) =>
-    handleBoostStart(e, startGame)
+    handleBoostStart(e, starter)
   );
   boostButton.addEventListener("mouseup", handleBoostEnd);
 
@@ -50,12 +52,19 @@ function setJoystickActiveClass(active) {
   } catch (e) {}
 }
 
-export function handleBoostStart(e, startGame) {
+export function handleBoostStart(e, starter) {
   e.preventDefault();
   boostButton.classList.add("pressed");
   if (!state.running) {
-    startGame();
-    state.input.isBoosting = true;
+    // starter will attempt to start the game if allowed
+    try {
+      starter();
+    } catch (err) {}
+    if (state.running) {
+      state.input.isBoosting = true;
+      return;
+    }
+    // if not started (blocked), do nothing further
     return;
   }
   state.input.isBoosting = true;
