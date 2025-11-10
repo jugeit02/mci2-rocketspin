@@ -150,24 +150,36 @@ body {
 }
 @media (max-width: 767px) {
   #messageBox {
-    /* make it fit nicely with some inset gutters */
-    padding: 22px 18px;
-    width: calc(100vw - 36px);
-    border-radius: 16px;
+    padding: 16px 14px;
+
+    width: calc(100vw - 28px);
+    border-radius: 12px;
+    transform: translate(-50%, -50%);
   }
+
   .overlay-title {
-    font-size: 1.8rem;
-    margin-bottom: 18px;
+    font-size: clamp(1rem, 5.5vw, 1.6rem);
+    margin-bottom: 12px;
   }
+
   .overlay-message {
-    font-size: 1.4rem;
+    font-size: clamp(0.95rem, 4.3vw, 1.15rem);
+    margin: 0 0 8px 0;
+    line-height: 1.18;
   }
+
   .overlay-subtitle {
-    font-size: 0.92rem;
+    font-size: clamp(0.72rem, 2.1vw, 0.86rem);
+    margin-top: 8px;
+  }
+
+  .restart-timer {
+    font-size: 0.72rem;
+    bottom: 8px;
+    right: 8px;
   }
 }
 
-/* Extra-tight phones: make overlay almost full-width but keep small gutters */
 @media (max-width: 360px) {
   #messageBox {
     width: calc(100vw - 20px);
