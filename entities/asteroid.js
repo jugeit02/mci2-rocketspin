@@ -67,7 +67,6 @@ export class Asteroid {
     ctx.translate(this.position.x, this.position.y);
     ctx.rotate(this.angle);
 
-    // fill with subtle gradient
     const grad = ctx.createRadialGradient(
       0,
       0,
@@ -88,12 +87,10 @@ export class Asteroid {
     ctx.closePath();
     ctx.fill();
 
-    // subtle outline
     ctx.strokeStyle = this.color;
     ctx.lineWidth = Math.max(1, this.size * 0.04);
     ctx.stroke();
 
-    // minimal craters (fewer, subtler)
     const craterCount = Math.max(0, Math.floor(this.size / 24));
     for (let c = 0; c < craterCount; c++) {
       const ca = Math.random() * Math.PI * 2;

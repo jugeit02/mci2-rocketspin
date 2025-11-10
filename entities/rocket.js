@@ -113,19 +113,17 @@ export class Rocket {
     ctx.closePath();
     ctx.fill();
 
-    // Idle/normal engine glow (always visible)
     ctx.fillStyle = "#00FFC0";
     ctx.beginPath();
     ctx.arc(this.size * 0.3, 0, this.size * 0.2, 0, Math.PI * 2);
     ctx.fill();
 
-    // Boost fire (only when boosting)
     if (state.input.isBoosting && state.running) {
       ctx.fillStyle = "#FFA500";
       ctx.beginPath();
       ctx.arc(-this.size * 0.85, 0, this.size * 0.18, 0, Math.PI * 2);
       ctx.fill();
-      // Glow effect
+
       ctx.strokeStyle = "rgba(255, 165, 0, 0.4)";
       ctx.lineWidth = 1.5;
       ctx.stroke();

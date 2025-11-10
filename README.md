@@ -1,37 +1,53 @@
-# mci2-rocketspin
+Rocket Spin
 
-Rocket Spin ist ein Touch-optimiertes 2D-Überlebensspiel im Weltraum, entwickelt mit HTML Canvas. Navigiere deine Rakete durch ein Asteroidenfeld und nutze Trägheit, Boost und ein Joystick-ähnliches Steuerungselement.
+Ein 2D-Weltraum-Touchspiel, bei dem du eine Rakete durch ein Asteroidenfeld steuerst. Entwickelt mit HTML, CSS und JavaScript Canvas.
 
-Wichtigste Änderungen/Features:
+Spielkonzept
 
-- Modularer Code: Spiel-Logik ist in mehrere ES-Module aufgeteilt (`main.js`, `utils.js`, `input.js`, `globals.js`, `vector.js`, `entities/*`).
-- Highscore & Name: Beim ersten Besuch wirst du nach einem Namen gefragt. Highscores werden lokal im Browser (localStorage) gespeichert.
-- Start mit Tippen: Tippe irgendwo auf die Seite, um das Spiel zu starten (auch bei Game Over zum Neustarten).
-- Verbesserte Start-/Game-Over-Anzeige: Highscore-Liste wird angezeigt und das Interface ist visueller verbessert.
+Rocket Spin ist ein Einzelspieler-Touchspiel im 2D-Weltraum. Das Ziel ist es, eine frei steuerbare Rakete so lange wie möglich durch ein Feld von Hindernissen (Asteroiden) zu navigieren und dabei Punkte zu sammeln. Das Spiel legt Wert auf eine realistische Trägheit und Bewegung.
 
-Controls
-- Boost: Drücke den BOOST-Button (rechter Bereich). Beim ersten Tipp startet das Spiel.
-- Rotation: Verwende das linke Joystick-Element (ziehen mit Finger/Maus). Auf Desktop funktioniert das per Mausklick und Ziehen.
-- Slow Motion: Halte zwei Finger auf dem Canvas (oder rechte Maustaste auf Desktop) für Zeitlupen-Modus.
+Kernmerkmale:
 
-Lokales Testen
+Endloses Überleben: Weiche Hindernissen aus und sammle Punkte durch Flugzeit.
 
-1. Öffne ein Terminal in diesem Ordner:
+Physik-basiert: Die Rakete bewegt sich mit realistischer Trägheit.
 
-```powershell
-Set-Location 'e:\Hochschule Esslingen\mci-2\mci2-rocketspin'
-python -m http.server 8000
-```
+Visuelle Effekte: Einfache, aber dynamische Umsetzung mit Partikeleffekten für den Boost und einen Sternenhintergrund.
 
-2. Öffne im Browser: http://localhost:8000
+Interaktion & Steuerung
 
-Hinweis: ES-Module werden von Browsern nicht über `file://` geladen — benutze daher einen lokalen Server wie oben.
+Das Spiel ist vollständig für Touch-Eingaben optimiert und basiert auf drei Hauptgesten:
 
-Fehlerbehebung
-- Wenn nichts passiert, öffne die Browser-Konsole (F12) und poste die ersten Fehlermeldungen hier.
+Rotation (Ein-Finger-Wischen):
 
-Entwicklung
-- Die Haupt-Logik startet in `main.js` → `initGame()`.
-- Dom-Elemente und Shared-State sind in `globals.js`.
+Lege einen Finger auf den Bildschirm und wische horizontal (links/rechts).
 
-Viel Spaß beim Testen!
+Dies ändert den Winkel der Rakete und bestimmt die Richtung des nächsten Boosts.
+
+Boost / Antrieb (Ein-Finger-Tippen/Halten):
+
+Tippe oder halte mit einem Finger auf den Bildschirm.
+
+Solange der Finger den Bildschirm berührt, beschleunigt die Rakete in ihre aktuelle Blickrichtung.
+
+Beim Loslassen gleitet die Rakete durch ihre Trägheit weiter.
+
+Slow Motion (Zwei-Finger-Geste):
+
+Lege zwei Finger gleichzeitig auf den Bildschirm.
+
+Dies reduziert die Spielgeschwindigkeit (z. B. auf 50 %).
+
+Die Steuerung (Rotation und Boost) bleibt währenddessen aktiv, um präzise Manöver in schwierigen Situationen zu ermöglichen.
+
+Technologie-Stack
+
+Dieses Projekt wird ausschließlich mit "Vanilla" Web-Technologien entwickelt:
+
+HTML5: Für die Grundstruktur der Seite.
+
+CSS3: Für das Styling der UI-Elemente (z. B. Punktestand).
+
+JavaScript (ES6+): Für die gesamte Spiellogik.
+
+HTML5 Canvas: Für das Rendern der Spielwelt (Rakete, Asteroiden, Partikel).
