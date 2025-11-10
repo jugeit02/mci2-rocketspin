@@ -77,6 +77,8 @@ body {
   z-index: 26;
   display: none;
   width: min(90vw, 500px);
+  /* Avoid internal scrolling — scale typography/spacing instead so the box fits on small screens */
+  touch-action: none;
   color: #05131f;
   border: 1px solid rgba(10, 16, 28, 0.06);
   text-align: center;
@@ -96,26 +98,28 @@ body {
 }
 
 .overlay-title {
-  margin: 0 0 20px 0;
-  font-size: 2rem;
+  margin: 0 0 18px 0;
+  /* responsive title size: won't grow too large, will shrink on small viewports */
+  font-size: clamp(1.2rem, 4.5vw, 2rem);
   font-weight: 900;
   color: #d94a1f;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
 .overlay-message {
-  font-size: 1.6rem;
+  /* responsive message size and tighter line-height to save vertical space */
+  font-size: clamp(1rem, 4vw, 1.6rem);
   font-weight: 800;
   color: #05131f;
-  margin: 0 0 12px 0;
-  line-height: 1.4;
+  margin: 0 0 10px 0;
+  line-height: 1.25;
 }
 
 .overlay-subtitle {
-  font-size: 0.95rem;
+  font-size: clamp(0.78rem, 2.2vw, 0.95rem);
   color: #5b6b7a;
-  margin: 12px 0 0 0;
-  line-height: 1.5;
+  margin: 10px 0 0 0;
+  line-height: 1.3;
 }
 
 .restart-timer {
@@ -146,8 +150,9 @@ body {
 }
 @media (max-width: 767px) {
   #messageBox {
-    padding: 28px 20px;
-    width: 88vw;
+    /* make it fit nicely with some inset gutters */
+    padding: 22px 18px;
+    width: calc(100vw - 36px);
     border-radius: 16px;
   }
   .overlay-title {
@@ -159,6 +164,26 @@ body {
   }
   .overlay-subtitle {
     font-size: 0.92rem;
+  }
+}
+
+/* Extra-tight phones: make overlay almost full-width but keep small gutters */
+@media (max-width: 360px) {
+  #messageBox {
+    width: calc(100vw - 20px);
+    padding: 18px 12px;
+    border-radius: 12px;
+  }
+  .overlay-title {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+  }
+  .overlay-message {
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+  .overlay-subtitle {
+    font-size: 0.88rem;
   }
 }
 .muted {
