@@ -1,14 +1,13 @@
-// Zentrale globale Referenzen, Konstanten und Zustand
 export const canvas = document.getElementById("gameCanvas");
 export const ctx = canvas.getContext("2d");
 export const scoreElement = document.getElementById("score");
 export const messageBox = document.getElementById("messageBox");
+export const overlayBackdrop = document.getElementById("overlayBackdrop");
 
 export const joystickContainer = document.getElementById("joystick-container");
 export const joystickPad = document.getElementById("joystick-pad");
 export const boostButton = document.getElementById("boost-button");
 
-// Physikalische Konstanten
 export const THRUST = 0.05;
 export const ROTATION_SPEED = 0.0005;
 export const FRICTION = 0.995;
@@ -16,7 +15,6 @@ export const MAX_VELOCITY = 5;
 export const SLOW_MOTION_FACTOR = 0.3;
 export const JOYSTICK_RADIUS = 30;
 
-// Spielzustand (als Objekt, damit Importe Live-Bindings nutzen können)
 export const state = {
   running: false,
   score: 0,
@@ -33,12 +31,10 @@ export const state = {
   },
 };
 
-// Sammel-Arrays für Entities
 export const particles = [];
 export const asteroids = [];
 export const stars = [];
 
-// Spielerobjekt (wird von main/utils gesetzt)
 export let player = null;
 
 export function setPlayer(p) {
@@ -49,7 +45,6 @@ export function getPlayer() {
   return player;
 }
 
-// --- Player name & Highscore (localStorage) ---
 const NAME_KEY = "rocketspin_playerName";
 const HIGHSCORES_KEY = "rocketspin_highscores";
 
@@ -83,9 +78,7 @@ export function addHighscore(name, score) {
   try {
     const list = getHighscores();
     list.push({ name: name || "---", score: Math.round(score) });
-    // sort desc
     list.sort((a, b) => b.score - a.score);
-    // keep top 10
     const trimmed = list.slice(0, 10);
     localStorage.setItem(HIGHSCORES_KEY, JSON.stringify(trimmed));
     return trimmed;

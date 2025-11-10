@@ -1,26 +1,33 @@
-import { state, joystickContainer, joystickPad, boostButton } from "./globals.js";
+import {
+  state,
+  joystickContainer,
+  joystickPad,
+  boostButton,
+} from "./globals.js";
 
-// Hilfsfunktion
 function getTouchById(touches, id) {
   return Array.from(touches).find((t) => t.identifier === id);
 }
 
 export function addControlEventListeners({ startGame }) {
-  // Boost Button
-  boostButton.addEventListener("touchstart", (e) => handleBoostStart(e, startGame));
+  boostButton.addEventListener("touchstart", (e) =>
+    handleBoostStart(e, startGame)
+  );
   boostButton.addEventListener("touchend", handleBoostEnd);
-  boostButton.addEventListener("mousedown", (e) => handleBoostStart(e, startGame));
+  boostButton.addEventListener("mousedown", (e) =>
+    handleBoostStart(e, startGame)
+  );
   boostButton.addEventListener("mouseup", handleBoostEnd);
 
-  // Joystick Touch
   joystickContainer.addEventListener("touchstart", handleJoystickStart);
+  joystickContainer.addEventListener("touchend", () =>
+    setJoystickActiveClass(false)
+  );
 
-  // Joystick Mouse (Desktop)
   joystickContainer.addEventListener("mousedown", handleJoystickStartMouse);
   document.addEventListener("mousemove", handleJoystickMoveMouse);
   document.addEventListener("mouseup", handleJoystickEndMouse);
 
-  // Canvas-wide slow motion (Touches/mouse handled here too)
   const canvas = document.getElementById("gameCanvas");
   canvas.addEventListener("touchstart", handleCanvasTouchStart);
   canvas.addEventListener("touchend", handleCanvasTouchEnd);
@@ -29,22 +36,41 @@ export function addControlEventListeners({ startGame }) {
   canvas.addEventListener("mouseup", handleCanvasMouseUp);
 }
 
-// BOOST
+function setBoostActiveClass(active) {
+  try {
+    if (active) document.body.classList.add("boost-active");
+    else document.body.classList.remove("boost-active");
+  } catch (e) {}
+}
+
+function setJoystickActiveClass(active) {
+  try {
+    if (active) document.body.classList.add("joystick-active");
+    else document.body.classList.remove("joystick-active");
+  } catch (e) {}
+}
+
 export function handleBoostStart(e, startGame) {
   e.preventDefault();
+  boostButton.classList.add("pressed");
   if (!state.running) {
     startGame();
+    state.input.isBoosting = true;
     return;
   }
   state.input.isBoosting = true;
+  setBoostActiveClass(true);
+  updateSlowMotion();
 }
 
 export function handleBoostEnd(e) {
   e.preventDefault();
+  boostButton.classList.remove("pressed");
   state.input.isBoosting = false;
+  setBoostActiveClass(false);
+  updateSlowMotion();
 }
 
-// JOYSTICK (Touch)
 export function handleJoystickStart(e) {
   e.preventDefault();
   if (state.input.joystickTouchID !== null) return;
@@ -53,11 +79,16 @@ export function handleJoystickStart(e) {
   state.input.joystickTouchID = touch.identifier;
 
   const rect = joystickContainer.getBoundingClientRect();
-  state.input.joystickCenter = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  state.input.joystickCenter = {
+    x: rect.left + rect.width / 2,
+    y: rect.top + rect.height / 2,
+  };
 
   document.addEventListener("touchmove", handleJoystickMove);
   document.addEventListener("touchend", handleJoystickEnd);
   document.addEventListener("touchcancel", handleJoystickEnd);
+  updateSlowMotion();
+  setJoystickActiveClass(true);
 }
 
 export function handleJoystickMove(e) {
@@ -80,24 +111,31 @@ export function handleJoystickMove(e) {
 export function handleJoystickEnd(e) {
   if (state.input.joystickTouchID === null) return;
 
-  const isJoystickFingerReleased = Array.from(e.changedTouches).some((t) => t.identifier === state.input.joystickTouchID);
+  const isJoystickFingerReleased = Array.from(e.changedTouches).some(
+    (t) => t.identifier === state.input.joystickTouchID
+  );
   if (isJoystickFingerReleased) {
     state.input.joystickTouchID = null;
     joystickPad.style.transform = "translate(0, 0)";
     document.removeEventListener("touchmove", handleJoystickMove);
     document.removeEventListener("touchend", handleJoystickEnd);
     document.removeEventListener("touchcancel", handleJoystickEnd);
+    updateSlowMotion();
+    setJoystickActiveClass(false);
   }
 }
 
-// JOYSTICK (Mouse)
 let isJoystickBeingDragged = false;
 export function handleJoystickStartMouse(e) {
   e.preventDefault();
   if (e.button !== 0) return;
   isJoystickBeingDragged = true;
   const rect = joystickContainer.getBoundingClientRect();
-  state.input.joystickCenter = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  state.input.joystickCenter = {
+    x: rect.left + rect.width / 2,
+    y: rect.top + rect.height / 2,
+  };
+  setJoystickActiveClass(true);
 }
 
 export function handleJoystickMoveMouse(e) {
@@ -117,9 +155,9 @@ export function handleJoystickEndMouse(e) {
   if (!isJoystickBeingDragged) return;
   isJoystickBeingDragged = false;
   joystickPad.style.transform = "translate(0, 0)";
+  setJoystickActiveClass(false);
 }
 
-// CANVAS SLOW MOTION (Touch/Mouse)
 export function handleCanvasTouchStart(e) {
   Array.from(e.changedTouches).forEach((touch) => {
     const target = touch.target;
@@ -127,13 +165,15 @@ export function handleCanvasTouchStart(e) {
       state.input.canvasTouchIDs.push(touch.identifier);
     }
   });
-  updateSlowMotion(e.touches);
+  updateSlowMotion();
 }
 
 export function handleCanvasTouchEnd(e) {
   const endedTouchIDs = Array.from(e.changedTouches).map((t) => t.identifier);
-  state.input.canvasTouchIDs = state.input.canvasTouchIDs.filter((id) => !endedTouchIDs.includes(id));
-  updateSlowMotion(e.touches);
+  state.input.canvasTouchIDs = state.input.canvasTouchIDs.filter(
+    (id) => !endedTouchIDs.includes(id)
+  );
+  updateSlowMotion();
 }
 
 export function handleCanvasMouseDown(e) {
@@ -149,6 +189,18 @@ export function handleCanvasMouseUp(e) {
   }
 }
 
-function updateSlowMotion(touches) {
-  state.slowMotionActive = touches.length >= 2;
+function updateSlowMotion() {
+  const canvasTouches = state.input.canvasTouchIDs
+    ? state.input.canvasTouchIDs.length
+    : 0;
+  const joystickActive = state.input.joystickTouchID !== null;
+  const boostActive = !!state.input.isBoosting;
+
+  if (canvasTouches >= 2) {
+    state.slowMotionActive = true;
+  } else if (canvasTouches >= 1 && (joystickActive || boostActive)) {
+    state.slowMotionActive = true;
+  } else {
+    state.slowMotionActive = false;
+  }
 }

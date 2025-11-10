@@ -2,17 +2,22 @@ import { Vector } from "../vector.js";
 import { state, ctx } from "../globals.js";
 
 export class Particle {
-  constructor(x, y, angle, color, speed, lifetime) {
+  constructor(x, y, angle, color, speed, lifetime, size) {
     this.position = new Vector(x, y);
-    this.velocity = new Vector(Math.cos(angle) * speed, Math.sin(angle) * speed);
+    this.velocity = new Vector(
+      Math.cos(angle) * speed,
+      Math.sin(angle) * speed
+    );
     this.color = color;
     this.lifetime = lifetime;
     this.age = 0;
-    this.size = 2;
+    this.size = typeof size === "number" ? size : 2;
   }
 
   update() {
-    const effectiveVelocity = this.velocity.copy().multiply(state.deltaTime / 16);
+    const effectiveVelocity = this.velocity
+      .copy()
+      .multiply(state.deltaTime / 16);
     this.position.add(effectiveVelocity);
     this.age += state.deltaTime;
     this.velocity.multiply(0.98);

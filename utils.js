@@ -1,5 +1,23 @@
-import { canvas, ctx, scoreElement, messageBox, state, particles, asteroids, stars, setPlayer, getPlayer, joystickPad } from "./globals.js";
-import { getPlayerName, setPlayerName, getHighscores, addHighscore } from "./globals.js";
+import {
+  canvas,
+  ctx,
+  scoreElement,
+  messageBox,
+  overlayBackdrop,
+  state,
+  particles,
+  asteroids,
+  stars,
+  setPlayer,
+  getPlayer,
+  joystickPad,
+} from "./globals.js";
+import {
+  getPlayerName,
+  setPlayerName,
+  getHighscores,
+  addHighscore,
+} from "./globals.js";
 import { Vector } from "./vector.js";
 import { Rocket } from "./entities/rocket.js";
 import { Asteroid } from "./entities/asteroid.js";
@@ -16,10 +34,8 @@ export function initGame() {
   for (let i = 0; i < 100; i++) {
     stars.push(new Star());
   }
-  // Ensure input listeners are registered
   addControlEventListeners({ startGame });
 
-  // If player has no saved name, prompt for it first
   const existingName = getPlayerName();
   if (!existingName) {
     promptForName();
@@ -27,14 +43,11 @@ export function initGame() {
     showStartScreen();
   }
 
-  // Start game on any pointer (click/touch) when on start screen and name exists
   function globalStartHandler(e) {
     if (!state.running && getPlayerName()) {
-      // start the game regardless of where user tapped
       startGame();
     }
   }
-  // use pointerdown to catch mouse/touch/stylus
   document.addEventListener("pointerdown", globalStartHandler);
 }
 
@@ -55,50 +68,93 @@ export function startGame() {
   spawnAsteroid(40);
 
   scoreElement.textContent = state.score;
-  messageBox.style.display = "none";
+  hideOverlay();
 
-  // Joystick Pad zurücksetzen
   if (joystickPad) joystickPad.style.transform = "translate(0, 0)";
 
   requestAnimationFrame(gameLoop);
 }
 
+function showOverlay(
+  title = "Rocket Spin",
+  message = "Tap to Start",
+  subtitle = ""
+) {
+  messageBox.style.display = "block";
+  overlayBackdrop.style.display = "block";
+  document.getElementById("messageTitle").textContent = title;
+  document.getElementById("messageText").textContent = message;
+  document.getElementById("messageSubtitle").innerHTML = subtitle;
+}
+
+function hideOverlay() {
+  messageBox.style.display = "none";
+  overlayBackdrop.style.display = "none";
+}
+
 export function showStartScreen(isGameOver = false) {
   state.running = false;
-  messageBox.style.display = "flex";
-  const title = document.getElementById("messageTitle");
-  const text = document.getElementById("messageText");
-  title.textContent = isGameOver ? "Game Over" : "Rocket Spin";
-
-  // Show highscores
-  const highs = getHighscores();
-  const highHtml = highs.length
-    ? `<h3>Highscores</h3><ol>${highs
-        .map((h) => `<li>${h.name}: ${h.score}</li>`)
-        .join("")}</ol>`
-    : "<p class=\"muted\">Noch keine Highscores</p>";
 
   if (isGameOver) {
-    // add player score to highs
     const playerName = getPlayerName() || "---";
     addHighscore(playerName, state.score);
-    text.innerHTML = `Dein Punktestand: <b>${state.score.toFixed(0)}</b><br><small>Tippe irgendwo, um neu zu starten</small><div class=\"highscores\">${highHtml}</div>`;
+  }
+
+  const highs = getHighscores();
+  const bestScore = highs.length > 0 ? highs[0] : null;
+  const bestScoreText = bestScore
+    ? `Best: <strong>${bestScore.name}</strong> - ${bestScore.score}`
+    : "No highscore yet";
+
+  const controlsText = `
+    <div style="font-size: 0.85rem; line-height: 1.6; margin-top: 12px;">
+      <strong>Controls:</strong><br>
+      🕹️ Joystick: rotate<br>
+      🔥 Boost: accelerate<br>
+      ⏱️ Slow Motion: 2 fingers
+    </div>
+  `;
+
+  if (isGameOver) {
+    showOverlay(
+      "Rocket Spin",
+      "Game Over",
+      `<div style="margin-bottom: 12px;">Score: <strong>${state.score.toFixed(
+        0
+      )}</strong></div>
+       <div style="font-size: 0.9rem; padding: 8px 0; border-top: 1px solid #ddd; padding-top: 8px;">
+         ${bestScoreText}
+       </div>
+       ${controlsText}
+       <div style="margin-top: 12px; font-size: 0.85rem; color: #5b6b7a;">Tap anywhere to restart</div>`
+    );
   } else {
-    text.innerHTML = `Tippe irgendwo, um zu starten.<br>Steuere mit Joystick und Boost-Button.<div class=\"highscores\">${highHtml}</div>`;
+    showOverlay(
+      "Rocket Spin",
+      "Tap to Start",
+      `<div style="font-size: 0.9rem; padding-bottom: 8px; border-bottom: 1px solid #ddd;">
+         ${bestScoreText}
+       </div>
+       ${controlsText}`
+    );
   }
 
   if (joystickPad) joystickPad.style.transform = "translate(0, 0)";
 }
 
-// Prompt user for name (simple inline form inside messageBox)
 export function promptForName() {
-  messageBox.style.display = "flex";
-  const title = document.getElementById("messageTitle");
-  const text = document.getElementById("messageText");
-  title.textContent = "Willkommen";
-  text.innerHTML = `<p>Bitte gib deinen Namen ein, um Highscores zu speichern:</p>
-    <input id=\"playerNameInput\" type=\"text\" maxlength=\"20\" placeholder=\"Name\" />
-    <div style=\"margin-top:8px;\"><button id=\"playerNameOk\">OK</button></div>`;
+  showOverlay(
+    "Welcome",
+    "Enter your name",
+    `<div style="margin-top: 12px;">
+       <input id="playerNameInput" type="text" maxlength="20" placeholder="Name" 
+              style="padding: 8px 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; width: 80%; max-width: 200px;" />
+       <div style="margin-top: 12px;">
+         <button id="playerNameOk" 
+                 style="padding: 8px 20px; background: #d94a1f; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem;">OK</button>
+       </div>
+     </div>`
+  );
 
   const input = document.getElementById("playerNameInput");
   const ok = document.getElementById("playerNameOk");
@@ -107,7 +163,7 @@ export function promptForName() {
     const v = input.value.trim();
     if (v.length === 0) return input.focus();
     setPlayerName(v);
-    messageBox.style.display = "none";
+    hideOverlay();
     showStartScreen();
   }
 
@@ -121,12 +177,7 @@ export function promptForName() {
 function gameLoop(currentTime) {
   if (!state.running) {
     drawBackground();
-    const player = null; // player draw only if exists (handled below)
-    // draw existing particles/stars
-    if (typeof window !== "undefined") {
-      // draw stars and particles
-      stars.forEach((s) => s.draw());
-    }
+    stars.forEach((s) => s.draw());
     if (getPlayer()) getPlayer().draw();
     updateParticles();
     drawParticles();
@@ -140,7 +191,6 @@ function gameLoop(currentTime) {
   const timeFactor = state.slowMotionActive ? 0.3 : 1;
   state.deltaTime *= timeFactor;
 
-  // Update
   const player = getPlayer();
   if (player) player.update();
   asteroids.forEach((a) => a.update());
@@ -151,7 +201,6 @@ function gameLoop(currentTime) {
   state.score += state.deltaTime / 100;
   scoreElement.textContent = state.score.toFixed(0);
 
-  // Draw
   drawBackground();
   drawAsteroids();
   if (player) player.draw();
@@ -163,7 +212,10 @@ function gameLoop(currentTime) {
 function handleAsteroidSpawning(deltaTime) {
   asteroidSpawnTimer += deltaTime;
   if (asteroidSpawnTimer >= ASTEROID_SPAWN_INTERVAL) {
-    const currentInterval = Math.max(500, ASTEROID_SPAWN_INTERVAL - state.score * 5);
+    const currentInterval = Math.max(
+      500,
+      ASTEROID_SPAWN_INTERVAL - state.score * 5
+    );
     if (asteroidSpawnTimer >= currentInterval) {
       spawnRandomAsteroid();
       asteroidSpawnTimer = 0;
@@ -246,13 +298,42 @@ export function resizeCanvas() {
 }
 
 export function drawBackground() {
-  ctx.fillStyle = "#000000";
+  const g = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  g.addColorStop(0, "#030417");
+  g.addColorStop(0.45, "#07102a");
+  g.addColorStop(1, "#000014");
+  ctx.fillStyle = g;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const nx = canvas.width * 0.25;
+  const ny = canvas.height * 0.2;
+  const nr = Math.max(canvas.width, canvas.height) * 0.6;
+  const neb = ctx.createRadialGradient(nx, ny, 0, nx, ny, nr);
+  neb.addColorStop(0, "rgba(8,18,48,0.45)");
+  neb.addColorStop(0.25, "rgba(18,8,48,0.18)");
+  neb.addColorStop(0.6, "rgba(0,0,0,0)");
+  ctx.globalCompositeOperation = "lighter";
+  ctx.fillStyle = neb;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.globalCompositeOperation = "source-over";
 
   stars.forEach((s) => s.draw());
 
+  const vign = ctx.createRadialGradient(
+    canvas.width / 2,
+    canvas.height / 2,
+    Math.max(canvas.width, canvas.height) * 0.2,
+    canvas.width / 2,
+    canvas.height / 2,
+    Math.max(canvas.width, canvas.height) * 0.8
+  );
+  vign.addColorStop(0, "rgba(0,0,0,0)");
+  vign.addColorStop(1, "rgba(0,0,0,0.45)");
+  ctx.fillStyle = vign;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   if (state.slowMotionActive && state.running) {
-    ctx.fillStyle = "rgba(0, 255, 192, 0.1)";
+    ctx.fillStyle = "rgba(0, 180, 150, 0.08)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 }
