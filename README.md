@@ -1,53 +1,38 @@
-Rocket Spin
+🚀 Rocket Spin
 
-Ein 2D-Weltraum-Touchspiel, bei dem du eine Rakete durch ein Asteroidenfeld steuerst. Entwickelt mit HTML, CSS und JavaScript Canvas.
+Ein 2D-Weltraum-Touchspiel, bei dem du eine Rakete durch ein Asteroidenfeld steuerst.
+Entwickelt mit HTML, CSS und JavaScript (Canvas).
 
-Spielkonzept
+🎯 Spielkonzept
 
-Rocket Spin ist ein Einzelspieler-Touchspiel im 2D-Weltraum. Das Ziel ist es, eine frei steuerbare Rakete so lange wie möglich durch ein Feld von Hindernissen (Asteroiden) zu navigieren und dabei Punkte zu sammeln. Das Spiel legt Wert auf eine realistische Trägheit und Bewegung.
+Rocket Spin ist ein Einzelspieler-Touchspiel im 2D-Weltraum.
+Ziel ist es, eine frei steuerbare Rakete so lange wie möglich durch ein Feld von Hindernissen (Asteroiden) zu navigieren und dabei Punkte zu sammeln.
+Das Spiel setzt auf realistische Trägheit und flüssige Steuerung, wodurch präzise Manöver erforderlich sind.
 
-Kernmerkmale:
+🌌 Kernmerkmale
 
-Endloses Überleben: Weiche Hindernissen aus und sammle Punkte durch Flugzeit.
+Endloser Überlebensmodus – weiche Asteroiden aus und sammle Punkte durch Flugzeit.
 
-Physik-basiert: Die Rakete bewegt sich mit realistischer Trägheit.
+Physikbasiertes Flugverhalten – Trägheit und Beschleunigung erzeugen ein realistisches Steuergefühl.
 
-Visuelle Effekte: Einfache, aber dynamische Umsetzung mit Partikeleffekten für den Boost und einen Sternenhintergrund.
+Visuelle Effekte – Partikeleffekte beim Boost und ein sich bewegender Sternenhintergrund.
 
-Interaktion & Steuerung
+🎮 Interaktion & Steuerung
 
-Das Spiel ist vollständig für Touch-Eingaben optimiert und basiert auf drei Hauptgesten:
+Das Spiel ist vollständig für Touch-Eingaben konzipiert und nutzt drei Hauptgesten:
 
-Rotation (Ein-Finger-Wischen):
+| Aktion              | Geste                             | Beschreibung                                                                                |
+| ------------------- | --------------------------------- | ------------------------------------------------------------------------------------------- |
+| **Rotation**        | Ein-Finger-Wischen (links/rechts) | Ändert den Winkel der Rakete und somit ihre Flugrichtung.                                   |
+| **Boost / Antrieb** | Ein-Finger-Tippen oder Halten     | Beschleunigt die Rakete in Blickrichtung. Beim Loslassen gleitet sie durch Trägheit weiter. |
+| **Slow Motion**     | Zwei-Finger-Geste                 | Reduziert die Spielgeschwindigkeit auf ca. 50 % für präzise Steuerung.                      |
 
-Lege einen Finger auf den Bildschirm und wische horizontal (links/rechts).
+🧠 Technologie-Stack
 
-Dies ändert den Winkel der Rakete und bestimmt die Richtung des nächsten Boosts.
+Das Projekt wurde ausschließlich mit Vanilla Web-Technologien entwickelt — ohne Frameworks oder externe Libraries:
 
-Boost / Antrieb (Ein-Finger-Tippen/Halten):
+HTML5: Struktur und Canvas-Element
 
-Tippe oder halte mit einem Finger auf den Bildschirm.
+CSS3: Styling der UI-Elemente (z. B. Punktestand, Overlays)
 
-Solange der Finger den Bildschirm berührt, beschleunigt die Rakete in ihre aktuelle Blickrichtung.
-
-Beim Loslassen gleitet die Rakete durch ihre Trägheit weiter.
-
-Slow Motion (Zwei-Finger-Geste):
-
-Lege zwei Finger gleichzeitig auf den Bildschirm.
-
-Dies reduziert die Spielgeschwindigkeit (z. B. auf 50 %).
-
-Die Steuerung (Rotation und Boost) bleibt währenddessen aktiv, um präzise Manöver in schwierigen Situationen zu ermöglichen.
-
-Technologie-Stack
-
-Dieses Projekt wird ausschließlich mit "Vanilla" Web-Technologien entwickelt:
-
-HTML5: Für die Grundstruktur der Seite.
-
-CSS3: Für das Styling der UI-Elemente (z. B. Punktestand).
-
-JavaScript (ES6+): Für die gesamte Spiellogik.
-
-HTML5 Canvas: Für das Rendern der Spielwelt (Rakete, Asteroiden, Partikel).
+JavaScript (ES6+): Spiellogik, Physik, Eingabe und Rendering
