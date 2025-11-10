@@ -27,6 +27,25 @@ import { addControlEventListeners } from "./input.js";
 
 let asteroidSpawnTimer = 0;
 const ASTEROID_SPAWN_INTERVAL = 1500;
+let restartBlockedUntil = 0;
+
+function startRestartTimer() {
+  const timerEl = document.getElementById("restartTimer");
+  if (!timerEl) return;
+
+  const updateTimer = () => {
+    const remaining = Math.max(0, restartBlockedUntil - performance.now());
+    const seconds = (remaining / 1000).toFixed(1);
+    timerEl.textContent = seconds > 0 ? seconds : "Ready!";
+    timerEl.style.opacity = seconds > 0 ? "0.6" : "1";
+
+    if (remaining > 0) {
+      requestAnimationFrame(updateTimer);
+    }
+  };
+
+  updateTimer();
+}
 
 export function initGame() {
   resizeCanvas();
@@ -45,7 +64,9 @@ export function initGame() {
 
   function globalStartHandler(e) {
     if (!state.running && getPlayerName()) {
-      startGame();
+      if (performance.now() >= restartBlockedUntil) {
+        startGame();
+      }
     }
   }
   document.addEventListener("pointerdown", globalStartHandler);
@@ -64,8 +85,16 @@ export function startGame() {
   setPlayer(player);
   particles.length = 0;
   asteroids.length = 0;
-  spawnAsteroid(30);
-  spawnAsteroid(40);
+
+  let initialSize1 = 30;
+  let initialSize2 = 40;
+  if (window.innerWidth < 768) {
+    initialSize1 = 18;
+    initialSize2 = 25;
+  }
+
+  spawnAsteroid(initialSize1);
+  spawnAsteroid(initialSize2);
 
   scoreElement.textContent = state.score;
   hideOverlay();
@@ -98,6 +127,8 @@ export function showStartScreen(isGameOver = false) {
   if (isGameOver) {
     const playerName = getPlayerName() || "---";
     addHighscore(playerName, state.score);
+    restartBlockedUntil = performance.now() + 2000;
+    startRestartTimer();
   }
 
   const highs = getHighscores();
@@ -247,8 +278,14 @@ export function spawnAsteroid(radius) {
 }
 
 function spawnRandomAsteroid() {
-  const minSize = 20;
-  const maxSize = 50;
+  let minSize = 20;
+  let maxSize = 50;
+
+  if (window.innerWidth < 768) {
+    minSize = 12;
+    maxSize = 32;
+  }
+
   const size = minSize + Math.random() * (maxSize - minSize);
   spawnAsteroid(size);
 }

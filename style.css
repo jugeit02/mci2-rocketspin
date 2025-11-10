@@ -118,6 +118,16 @@ body {
   line-height: 1.5;
 }
 
+.restart-timer {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  font-size: 0.8rem;
+  color: #5b6b7a;
+  opacity: 0.6;
+  font-weight: 600;
+  pointer-events: none;
+}
 @media (max-width: 480px) {
   #messageBox {
     padding: 30px 20px;
