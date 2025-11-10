@@ -8,10 +8,20 @@ export const joystickContainer = document.getElementById("joystick-container");
 export const joystickPad = document.getElementById("joystick-pad");
 export const boostButton = document.getElementById("boost-button");
 
-export const THRUST = 0.05;
+function getPhysicsScale() {
+  return window.innerWidth < 768 ? 0.7 : 1;
+}
+
+export function getThrust() {
+  return 0.05 * getPhysicsScale();
+}
+
+export function getMaxVelocity() {
+  return 5 * getPhysicsScale();
+}
+
 export const ROTATION_SPEED = 0.0005;
 export const FRICTION = 0.995;
-export const MAX_VELOCITY = 5;
 export const SLOW_MOTION_FACTOR = 0.3;
 export const JOYSTICK_RADIUS = 30;
 

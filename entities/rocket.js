@@ -4,9 +4,9 @@ import {
   canvas,
   state,
   particles,
-  THRUST,
+  getThrust,
+  getMaxVelocity,
   FRICTION,
-  MAX_VELOCITY,
   SLOW_MOTION_FACTOR,
 } from "../globals.js";
 import { Particle } from "./particle.js";
@@ -35,8 +35,8 @@ export class Rocket {
 
     if (state.input.isBoosting && state.running) {
       const boostForce = new Vector(
-        Math.cos(this.angle) * THRUST,
-        Math.sin(this.angle) * THRUST
+        Math.cos(this.angle) * getThrust(),
+        Math.sin(this.angle) * getThrust()
       );
       this.velocity.add(boostForce.multiply(state.deltaTime));
 
@@ -81,7 +81,7 @@ export class Rocket {
     }
 
     this.velocity.limit(
-      MAX_VELOCITY * (state.slowMotionActive ? SLOW_MOTION_FACTOR : 1)
+      getMaxVelocity() * (state.slowMotionActive ? SLOW_MOTION_FACTOR : 1)
     );
 
     const effectiveVelocity = this.velocity
