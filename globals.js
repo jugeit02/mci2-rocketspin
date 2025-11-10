@@ -9,7 +9,7 @@ export const joystickPad = document.getElementById("joystick-pad");
 export const boostButton = document.getElementById("boost-button");
 
 function getPhysicsScale() {
-  return window.innerWidth < 768 ? 0.7 : 1;
+  return window.innerWidth < 768 ? 0.6 : 1;
 }
 
 export function getThrust() {
