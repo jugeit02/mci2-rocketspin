@@ -43,15 +43,6 @@ body {
   pointer-events: none;
 }
 
-@media (max-width: 420px) {
-  #score {
-    font-size: 0.95rem;
-    padding: 6px 10px;
-    top: 10px;
-    left: 10px;
-  }
-}
-
 .overlay-backdrop {
   position: fixed;
   top: 0;
@@ -77,7 +68,6 @@ body {
   z-index: 26;
   display: none;
   width: min(90vw, 500px);
-  /* Avoid internal scrolling — scale typography/spacing instead so the box fits on small screens */
   touch-action: none;
   color: #05131f;
   border: 1px solid rgba(10, 16, 28, 0.06);
@@ -99,7 +89,6 @@ body {
 
 .overlay-title {
   margin: 0 0 18px 0;
-  /* responsive title size: won't grow too large, will shrink on small viewports */
   font-size: clamp(1.2rem, 4.5vw, 2rem);
   font-weight: 900;
   color: #d94a1f;
@@ -107,7 +96,6 @@ body {
 }
 
 .overlay-message {
-  /* responsive message size and tighter line-height to save vertical space */
   font-size: clamp(1rem, 4vw, 1.6rem);
   font-weight: 800;
   color: #05131f;
@@ -132,72 +120,7 @@ body {
   font-weight: 600;
   pointer-events: none;
 }
-@media (max-width: 480px) {
-  #messageBox {
-    padding: 30px 20px;
-    width: 85vw;
-  }
-  .overlay-title {
-    font-size: 1.6rem;
-    margin-bottom: 16px;
-  }
-  .overlay-message {
-    font-size: 1.3rem;
-  }
-  .overlay-subtitle {
-    font-size: 0.9rem;
-  }
-}
-@media (max-width: 767px) {
-  #messageBox {
-    padding: 16px 14px;
 
-    width: calc(100vw - 28px);
-    border-radius: 12px;
-    transform: translate(-50%, -50%);
-  }
-
-  .overlay-title {
-    font-size: clamp(1rem, 5.5vw, 1.6rem);
-    margin-bottom: 12px;
-  }
-
-  .overlay-message {
-    font-size: clamp(0.95rem, 4.3vw, 1.15rem);
-    margin: 0 0 8px 0;
-    line-height: 1.18;
-  }
-
-  .overlay-subtitle {
-    font-size: clamp(0.72rem, 2.1vw, 0.86rem);
-    margin-top: 8px;
-  }
-
-  .restart-timer {
-    font-size: 0.72rem;
-    bottom: 8px;
-    right: 8px;
-  }
-}
-
-@media (max-width: 360px) {
-  #messageBox {
-    width: calc(100vw - 20px);
-    padding: 18px 12px;
-    border-radius: 12px;
-  }
-  .overlay-title {
-    font-size: 1.4rem;
-    margin-bottom: 12px;
-  }
-  .overlay-message {
-    font-size: 1.05rem;
-    font-weight: 800;
-  }
-  .overlay-subtitle {
-    font-size: 0.88rem;
-  }
-}
 .muted {
   color: #888;
 }
@@ -286,5 +209,82 @@ body {
     width: 88px;
     height: 88px;
     font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 360px) {
+  #messageBox {
+    width: calc(100vw - 20px);
+    padding: 18px 12px;
+    border-radius: 12px;
+  }
+  .overlay-title {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+  }
+  .overlay-message {
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+  .overlay-subtitle {
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #messageBox {
+    padding: 30px 20px;
+    width: 85vw;
+  }
+  .overlay-title {
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+  }
+  .overlay-message {
+    font-size: 1.3rem;
+  }
+  .overlay-subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 767px) {
+  #messageBox {
+    padding: 16px 14px;
+
+    width: calc(100vw - 28px);
+    border-radius: 12px;
+    transform: translate(-50%, -50%);
+  }
+
+  .overlay-title {
+    font-size: clamp(1rem, 5.5vw, 1.6rem);
+    margin-bottom: 12px;
+  }
+
+  .overlay-message {
+    font-size: clamp(0.95rem, 4.3vw, 1.15rem);
+    margin: 0 0 8px 0;
+    line-height: 1.18;
+  }
+
+  .overlay-subtitle {
+    font-size: clamp(0.72rem, 2.1vw, 0.86rem);
+    margin-top: 8px;
+  }
+
+  .restart-timer {
+    font-size: 0.72rem;
+    bottom: 8px;
+    right: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  #score {
+    font-size: 0.95rem;
+    padding: 6px 10px;
+    top: 10px;
+    left: 10px;
   }
 }

@@ -56,7 +56,6 @@ export function handleBoostStart(e, starter) {
   e.preventDefault();
   boostButton.classList.add("pressed");
   if (!state.running) {
-    // starter will attempt to start the game if allowed
     try {
       starter();
     } catch (err) {}
@@ -64,7 +63,6 @@ export function handleBoostStart(e, starter) {
       state.input.isBoosting = true;
       return;
     }
-    // if not started (blocked), do nothing further
     return;
   }
   state.input.isBoosting = true;
